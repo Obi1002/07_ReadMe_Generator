@@ -1,46 +1,75 @@
-const inquirer = require('inquirer');
+// imports
+const inquirer = require("inquirer");
+const fs = require("fs"); 
 
-inquirer
-  .prompt([
-    {
-      type: 'input',
-      message: 'What is the title of your project?',
-      name: 'title',
-    },
-    {
-      type: 'input',
-      message: 'Enter your project description.',
-      name: 'description',
-    },
-    {
-      type: 'list',
-      message: 'Enter your Table of Contents:',
-      name: 'ToC',
-    },
-    {
-    type: 'input',
-    message: 'Enter your Installation.',
-    name: 'installation',
-    },
-    {
-    type: 'Input',
-    message: 'Explain the usage of your project.',
-    name: 'usage',
-    },
-    {
-    // should this be a list or checkboxes
-    type: 'Input',
-    message: 'Enter your license:', 
-    name: 'license',
-    },
-  ])
+// Questions asked to the user
+const questions = [
+  {
+    type: "input",
+    message: "What is your GitHub username?",
+    name: "UserName",
+  },
+  {
+    type: "input",
+    message: "What is your email address?",
+    name: "Email",
+  },
+  {
+    type: "input",
+    message: "What is the title for your project?",
+    name: "Title",
+  },
+  {
+    type: "input",
+    message: "Please provide the description of your project.",
+    name: "Description",
+  },
+  {
+    type: "input",
+    message: "What requried dependencies should be installed to run this app?",
+    name: "Installation",
+  },
+  {
+    type: "input",
+    message: "What is purpose of this app?",
+    name: "Usage",
+  },
+  {
+    type: "input",
+    message: "What license was used for this README?",
+    name: "License",
+  },
+  {
+    type: "input",
+    message: "Please add all contributors",
+    name: "Contributor",
+  },
+  {
+    type: "input",
+    message: "What command will you use to test this App?",
+    name: "Test",
+  }
+];
 
-//   title of my project and sections entitled Description, Table of Contents, Installation, Usage, License, Contributing, Tests, and Questions
+// Writing to a file 
+function writeToFile(fileName, data) {
 
+fs.writeFile("./demo/"+fileName, data, function(err) {
+  if (err) {
+    return console.log(err);
+  }
+  console.log ("Successfully wrote: " + fileName);
+})
 
+}
 
-  .then((response) =>
-    response.confirm === response.password
-      ? console.log('Success!')
-      : console.log('Look at your ReadMe!')
-  );
+// initialization function
+function init() {
+  inquirer.prompt(questions)
+  .then(function(data) {
+    writeToFile("DemoREADME.md", generatorMarkdown(data));
+  })
+}
+
+// run the app
+init();
