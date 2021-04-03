@@ -1,5 +1,6 @@
 // imports
 const inquirer = require("inquirer");
+const generateMarkdown = require("./generateMarkdown.js")
 const fs = require("fs"); 
 
 // Questions asked to the user
@@ -35,26 +36,32 @@ const questions = [
     name: "Usage",
   },
   {
-    type: "input",
+    type: "list",
     message: "What license was used for this README?",
     name: "License",
+    choices: ['MIT', 'GNU']
   },
   {
     type: "input",
-    message: "Please add all contributors",
+    message: "Please add all contributors:",
     name: "Contributor",
   },
   {
     type: "input",
     message: "What command will you use to test this App?",
     name: "Test",
+  },
+  {
+    type: "input",
+    message: "Do you have any questions about this App?",
+    name: "Questions",
   }
 ];
 
 // Writing to a file 
 function writeToFile(fileName, data) {
 
-fs.writeFile("./demo/"+fileName, data, function(err) {
+fs.writeFile("./READMEdata/"+fileName, data, function(err) {
   if (err) {
     return console.log(err);
   }
@@ -67,7 +74,7 @@ fs.writeFile("./demo/"+fileName, data, function(err) {
 function init() {
   inquirer.prompt(questions)
   .then(function(data) {
-    writeToFile("DemoREADME.md", generatorMarkdown(data));
+    writeToFile("DemoREADME.md", generateMarkdown(data));
   })
 }
 
